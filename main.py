@@ -1,5 +1,8 @@
+import streamlit as st
+
+
 def main():
-    print("Hello from mochi-money!")
+    st.title("MochiMoney")
 
 
 if __name__ == "__main__":
