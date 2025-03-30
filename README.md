@@ -1,6 +1,6 @@
 # 💰 MochiMoney – My Personal Budget App
 
-![MochiMoney Icon](assets/icon/mochi_icon_1024.png)
+![MochiMoney Icon](assets/icon/mochi_icon_256.png)
 
 Just a lightweight budgeting app I made for myself.  
 Built with Streamlit and Docker. Runs locally in a browser.  
