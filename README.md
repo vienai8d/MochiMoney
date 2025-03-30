@@ -15,7 +15,7 @@ Mount a host directory for saving data (e.g. `~/mochi-data`):
 ```bash
 docker run -d \
   -p 8501:8501 \
-  -v ~/mochi-data:/data \
+  -v ~/mochi-data:/app/data \
   --name mochi-money \
   vienai8d/mochi-money
 ```
