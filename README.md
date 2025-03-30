@@ -1,4 +1,4 @@
-# 💰 MochiMoney – My Personal Budget App
+# MochiMoney – My Personal Budget App
 
 ![MochiMoney Icon](assets/icon/mochi_icon_256.png)
 
