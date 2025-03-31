@@ -79,14 +79,14 @@ with st.sidebar:
             try:
                 (DATA_DIR / file_to_delete).unlink()
                 st.success(f"{file_to_delete} を削除しました。")
-                st.experimental_rerun()
+                st.rerun()
             except Exception as e:
                 st.error(f"削除に失敗しました: {e}")
 
 # ──────────────── 編集モード表示 ────────────────
 if st.session_state["edit_mode"]:
     st.markdown(
-        f"""<div style="background-color:#FFF3CD;padding:10px;border-radius:10px;margin-bottom:20px;">
+        f"""<div style="background-color:#FF11CD;padding:10px;border-radius:10px;margin-bottom:20px;">
         ✏ <strong>編集モード</strong>：<code>{st.session_state["edit_filename"]}</code> を編集中です。
         </div>""",
         unsafe_allow_html=True
@@ -105,7 +105,7 @@ for idx, item in enumerate(st.session_state["items"]):
     item["budget"] = cols[1].number_input(f"予算（円）", value=item.get("budget", 0), step=1000, key=f"budget_{idx}")
     if cols[2].button("🗑", key=f"delete_{idx}"):
         st.session_state["items"].pop(idx)
-        st.experimental_rerun()
+        st.rerun()
 
 st.button("＋ 項目を追加する", on_click=add_item)
 
