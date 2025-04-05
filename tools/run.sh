@@ -1,1 +1,1 @@
-streamlit run app/main.py
+streamlit run app/Home.py
