@@ -45,7 +45,7 @@ if prev_file_path.exists():
 st.markdown("### 資産を入力してください")
 
 account_name = st.text_input("アカウント名")
-account_type = st.selectbox("アカウント種別", ["銀行口座", "証券口座", "その他"])
+account_type = st.selectbox("アカウント種別", ["銀行口座", "証券口座", "年金", "その他"])
 balance = st.number_input("残高（円）", min_value=0, step=1000)
 note = st.text_input("備考（任意）")
 
@@ -90,3 +90,59 @@ if file_path.exists():
         if st.button("⚠️ この月のデータを削除"):
             file_path.unlink()  # ファイル削除
             st.success(f"{month_str} のデータを削除しました。ページを再読み込みしてください。")
+
+    # カテゴリ（アカウント種別）ごとの合計表示
+    st.markdown("### カテゴリごとの合計")
+    category_summary = df.groupby("account_type")["balance"].sum().reset_index()
+    category_summary.columns = ["カテゴリ", "合計（円）"]
+    st.dataframe(category_summary, use_container_width=True)
+
+    # 総資産の合計
+    total_balance = df["balance"].sum()
+    st.markdown(f"### 💰 総資産合計：**{total_balance:,.0f} 円**")
+
+# 全期間の資産推移（st.line_chart版）
+def load_all_assets():
+    all_data = []
+    for file in sorted(DATA_DIR.glob("*.csv")):
+        month = file.stem  # 例: "2025-04"
+        df = pd.read_csv(file)
+        total = df["balance"].sum()
+        all_data.append({"month": month, "total_balance": total})
+    return pd.DataFrame(all_data)
+
+st.markdown("## 📊 全期間の資産推移")
+
+asset_df = load_all_assets()
+
+if not asset_df.empty:
+    asset_df = asset_df.set_index("month")
+    st.line_chart(asset_df["total_balance"])
+else:
+    st.info("まだ資産データがありません。入力してからご確認ください。") 
+
+# カテゴリ別の資産推移グラフ
+def load_category_assets():
+    all_data = []
+    for file in sorted(DATA_DIR.glob("*.csv")):
+        month = file.stem
+        df = pd.read_csv(file)
+        for account_type, group in df.groupby("account_type"):
+            total = group["balance"].sum()
+            all_data.append({
+                "month": month,
+                "account_type": account_type,
+                "total_balance": total
+            })
+    return pd.DataFrame(all_data)
+
+st.markdown("## 📈 カテゴリ別の資産推移")
+
+category_df = load_category_assets()
+
+if not category_df.empty:
+    df_chart = category_df.pivot(index="month", columns="account_type", values="total_balance").fillna(0)
+    df_chart = df_chart.sort_index()
+    st.line_chart(df_chart)
+else:
+    st.info("カテゴリ別の資産データがまだありません。")
