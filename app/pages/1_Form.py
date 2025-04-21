@@ -142,7 +142,7 @@ with st.form("entry_form"):
     st.subheader("新規項目の追加")
 
     # 種別の選択（収入、支出、預金、貯蓄、投資、年金）
-    type_ = st.selectbox("種別", ["income", "outgo", "deposit", "saving", "invest", "pension"])
+    type_ = st.selectbox("種別", ["income", "outgo", "outgo_saving", "deposit", "saving", "invest", "pension"])
     # 名前の入力（例：P_楽天カード、M_給与など）
     name = st.text_input("名前（例：P_楽天カード、M_給与など）")
     # 実績金額（actual_amount）の入力（万円単位）
@@ -209,7 +209,7 @@ if "df" in locals() and not df.empty:
     st.markdown(f"### 🔮 翌月から{sim_years}年後までのシミュレーション")
     start_dt = datetime.strptime(month_str, "%Y-%m") + relativedelta(months=1)
     future_months = [(start_dt + relativedelta(months=i)).strftime("%Y-%m") for i in range(sim_years * 12)]
-    sim_data = pd.DataFrame(index=future_months, columns=["income", "outgo", "deposit", "saving", "investment", "pension"]).fillna(0.0)
+    sim_data = pd.DataFrame(index=future_months, columns=["income", "outgo", "outgo_saving", "deposit", "saving", "investment", "pension"]).fillna(0.0)
 
     for _, row in df.iterrows():
         # 各type（income, outgo, deposit, saving, investment, pension）に対する処理
@@ -246,6 +246,7 @@ if "df" in locals() and not df.empty:
             sim_data.loc[ym, "pension"] = cumulative_pension
         if "saving" in sim_data.columns:
             cumulative_saving += sim_data.loc[ym, "saving"]
+            cumulative_saving -= sim_data.loc[ym, "outgo_saving"]
             sim_data.loc[ym, "saving"] = cumulative_saving
 
     st.line_chart(sim_data)
