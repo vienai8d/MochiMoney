@@ -17,4 +17,4 @@ RUN uv sync --frozen
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Run the Streamlit app when the container starts
-CMD ["streamlit", "run", "app/main.py"]
+CMD ["streamlit", "run", "app/Home.py"]
