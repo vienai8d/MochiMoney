@@ -6,6 +6,13 @@ Just a lightweight budgeting app I made for myself.
 Built with Streamlit and Docker. Runs locally in a browser.  
 No accounts, no cloud — just simple money tracking 💸
 
+## How to push docker image
+
+```bash
+docker build . -t vienai8d/mochi-money
+docker push vienai8d/mochi-money
+```
+
 ## 🚀 How to Run
 
 ```bash
