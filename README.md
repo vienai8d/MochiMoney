@@ -22,9 +22,9 @@ docker pull vienai8d/mochi-money
 Mount a host directory for saving data (e.g. `~/mochi-data`):
 
 ```bash
-docker run -d \
+docker run -d --rm \
   -p 8501:8501 \
-  -v ~/mochi-data:/app/data \
+  -v ~/mochi-data:/src/app/data \
   --name mochi-money \
   vienai8d/mochi-money
 ```
