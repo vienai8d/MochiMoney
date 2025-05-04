@@ -5,16 +5,16 @@ FROM python:3.12-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Add the current project directory to the image under /app
-ADD . /app
+ADD . /src/
 
 # Set the working directory to /app
-WORKDIR /app
+WORKDIR /src/
 
 # Install dependencies based on the lockfile (uv.lock)
 RUN uv sync --frozen
 
 # Add the virtual environment's bin directory to PATH
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/src/.venv/bin:$PATH"
 
 # Run the Streamlit app when the container starts
 CMD ["streamlit", "run", "app/Home.py"]
